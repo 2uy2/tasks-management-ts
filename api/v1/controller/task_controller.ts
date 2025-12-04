@@ -63,8 +63,8 @@ export const detail = async (req: Request, res: Response) => {
 
 export const changeStatus = async (req: Request, res: Response) => {
     try {
-        const id:string = req.params.id;
-        const status:string = req.body.status;
+        const id: string = req.params.id;
+        const status: string = req.body.status;
 
         await Task.updateOne({
             _id: id,
@@ -83,4 +83,56 @@ export const changeStatus = async (req: Request, res: Response) => {
             messeage: "không tồn tại"
         })
     }
-} 
+}
+export const changeMulti = async (req: Request, res: Response) => {
+    try {
+        const ids:string[]=req.body.ids;
+        const key:string = req.body.key;
+        const value:string=req.body.value;
+        console.log(ids);
+        console.log(key);
+        console.log(value);
+        switch (key) {
+            case "status":
+                await Task.updateMany({
+                    _id: {
+                        $in: ids
+                    }
+                }, {
+                    status: value
+                })
+                res.json({
+                    code: 200,
+                    messeage: "cập nhật thành công"
+                })
+                break;
+            case "delete":
+                await Task.updateMany({
+                    _id: {
+                        $in: ids
+                    }
+                }, {
+                    deleted: true,
+                    deletedAt: new Date()
+                })
+                res.json({
+                    code: 200,
+                    messeage: "xoá thành công"
+                })
+                break;
+
+            default:
+                res.json({
+                    code: 400,
+                    messeage: "không tồn tại"
+                })
+                break;
+        }
+    } catch (error) {
+        res.json({
+            code: 400,
+            messeage: "không tồn tại"
+        })
+    }
+
+}
