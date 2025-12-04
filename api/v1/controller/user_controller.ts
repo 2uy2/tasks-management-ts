@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import md5 from "md5";
 import User from "../model/user_model";
-import {generateRandomString} from "../../../helper/generate"
+import { generateRandomString } from "../../../helper/generate"
 
 export const register = async (req: Request, res: Response) => {
     req.body.password = md5(req.body.password);
@@ -33,4 +33,34 @@ export const register = async (req: Request, res: Response) => {
             token: token
         })
     }
+}
+
+export const login = async (req: Request, res: Response) => {
+    const email: string = req.body.email;
+    const password: string = req.body.password;
+    const user = await User.findOne({
+        email: email,
+        deleted: false
+    })
+    if (!user) {
+        res.json({
+            code: 400,
+            message: "email không tồn tại"
+        })
+        return;
+    }
+    if (md5(password) != user.password) {
+        res.json({
+            code: 400,
+            message: "sai mật khẩu"
+        });
+        return;
+    }
+    const token = user.token;
+    res.cookie("token", token)
+    res.json({
+        code: 200,
+        message: "đăng nhập thành công",
+        token: token
+    })
 }
