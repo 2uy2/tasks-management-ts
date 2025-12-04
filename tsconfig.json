@@ -5,6 +5,6 @@
         "module": "commonjs", //commonjs là tiêu chuẩn được sử dụng trong node.js để làm việc với các module
         "removeComments": false, //xoá các comment khi biên dịch sang js
         "esModuleInterop": true, // dùng được từ kháo import thay cho từu kháo require
-        
+        "outDir": "dist",
     }
 }
