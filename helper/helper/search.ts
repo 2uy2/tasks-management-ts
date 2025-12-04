@@ -1,7 +1,12 @@
- module.exports=(query)=>{
-    let objectSearch = {
+interface ObjectSearch{
+    keyword:string,
+    regex?:RegExp
+}
+
+const searchHelpers =(query:Record<string,any>):ObjectSearch=>{
+    let objectSearch:ObjectSearch= {
         keyword:"",
-        regex:"",
+      
 
     }
     if (query.keyword){
@@ -11,4 +16,5 @@
     }
     return objectSearch
  }
+ export default searchHelpers;
  

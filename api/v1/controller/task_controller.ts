@@ -1,4 +1,5 @@
 import paginationHelpers from "../../../helper/helper/paganiton";
+import searchHelpers from "../../../helper/helper/search";
 import Task from "../model/task_model";
 import  {Request,Response} from "express";
 
@@ -7,6 +8,7 @@ export const index =async (req:Request,res:Response)=>{
     interface Find {
         deleted: boolean,
         status? : string,
+        title?:RegExp,
 
     }
     const find: Find={
@@ -15,6 +17,13 @@ export const index =async (req:Request,res:Response)=>{
     if(req.query.status){
         find.status=req.query.status.toString();
     }
+    //search
+        // lọc tìm kiếm keyword
+        const objectSearch = searchHelpers(req.query);
+        // console.log(objectSearch);
+        if (req.query.keyword) {
+            find.title = objectSearch.regex;
+        }
      // pagination
         const countTasks = await Task.countDocuments(find); // đếm số lượng object dữ liệu được gọi đến
         let objectPagination = paginationHelpers({
