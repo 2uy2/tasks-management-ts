@@ -1,3 +1,4 @@
+
 import paginationHelpers from "../../../helper/helper/paganiton";
 import searchHelpers from "../../../helper/helper/search";
 import Task from "../model/task_model";
@@ -135,4 +136,21 @@ export const changeMulti = async (req: Request, res: Response) => {
         })
     }
 
+}
+
+export const create = async (req: Request, res: Response) => {
+    try {
+        const product = new Task(req.body);
+        const data = await product.save();
+        res.json({
+            code:200,
+            message:"tạo thành công",
+            data:data
+        })
+    } catch (error) {
+        res.json({
+            code:400,
+            message:"lỗi"
+        })
+    }
 }
