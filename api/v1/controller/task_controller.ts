@@ -1,5 +1,7 @@
+import paginationHelpers from "../../../helper/helper/paganiton";
 import Task from "../model/task_model";
-import  {Router,Request,Response} from "express";
+import  {Request,Response} from "express";
+
 
 export const index =async (req:Request,res:Response)=>{
     interface Find {
@@ -13,6 +15,16 @@ export const index =async (req:Request,res:Response)=>{
     if(req.query.status){
         find.status=req.query.status.toString();
     }
+     // pagination
+        const countTasks = await Task.countDocuments(find); // đếm số lượng object dữ liệu được gọi đến
+        let objectPagination = paginationHelpers({
+                currentPage: 1, // truyền object
+                limitItems: 2,
+            },
+            req.query,
+            countTasks
+        );
+        //end pagination
     const sort = {};
     if(req.query.sortKey && req.query.sortValue){
         const sortKey=req.query.sortKey.toString();
@@ -20,7 +32,10 @@ export const index =async (req:Request,res:Response)=>{
         sort[sortKey]=sortValue;
 
     }
-    const task = await Task.find(find).sort(sort)
+    const task = await Task.find(find)
+    .sort(sort)
+    .limit(objectPagination.limitItems)
+    .skip(objectPagination.skip);
     console.log(task);
 
     res.json(task)
