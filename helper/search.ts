@@ -17,4 +17,3 @@ const searchHelpers =(query:Record<string,any>):ObjectSearch=>{
     return objectSearch
  }
  export default searchHelpers;
- 

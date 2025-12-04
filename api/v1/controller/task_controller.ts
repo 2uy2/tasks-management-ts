@@ -1,6 +1,6 @@
 
-import paginationHelpers from "../../../helper/helper/paganiton";
-import searchHelpers from "../../../helper/helper/search";
+import paginationHelpers from "../../../helper/paganiton";
+import searchHelpers from "../../../helper/search";
 import Task from "../model/task_model";
 import { Request, Response } from "express";
 

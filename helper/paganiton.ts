@@ -5,6 +5,7 @@ interface ObjectPagination {
     totalPage?:number
 }
 
+
 const paginationHelpers =(objectPagination:ObjectPagination,query :Record<string,any>,countRecord:number) :ObjectPagination=> {
     if (query.page){
         objectPagination.currentPage= parseInt(query.page )//so sánh current page với lại param
